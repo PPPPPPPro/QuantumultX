@@ -49,8 +49,6 @@ Loon 远程脚本配置:
 https://raw.githubusercontent.com/ClydeTime/BiliBili/main/modules/BiliBiliDailyBonus.plugin
 */
 
-exec=0
-
 const format = (ts, fmt = 'yyyy-MM-dd HH:mm:ss') => {
 	return $.time(fmt, ts);
 }
@@ -259,7 +257,7 @@ async function signBiliBili() {
 	if (config.cookie && await me()) {
 		await queryStatus()
 		var flag = true
-		let exec_times = exec	//用户设置投币次数
+		let exec_times = 0	//用户设置投币次数
 		if (!Boolean(exec_times)) {
 			exec_times = 5
 			real_times = 5 - (Number(config.coins.num) / 10)
