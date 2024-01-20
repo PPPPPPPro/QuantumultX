@@ -4,9 +4,6 @@
 更新时间: 2024-01-16
 脚本兼容: QuantumultX, Surge, Loon
 脚本作者: MartinsKing（@ClydeTime）
-修改了部分内容:
-  自动投币为0
-  msg不显示银瓜子兑换硬币成功
 软件功能: 登录/观看/分享/投币/直播签到/银瓜子转硬币/大会员积分签到/年度大会员每月B币券+等任务
 注意事项:
 	抓取cookie时注意保证账号登录状态;
@@ -26,7 +23,9 @@ QX, Surge, Loon说明：
 如通知成功获取cookie, 则可以使用此签到脚本.
 脚本将在每天上午7点30执行.
 2.投币设置
-定时任务脚本投币规则为: 随机获取关注列表Up主视频, 默认0视频0硬币, 不点赞.
+定时任务脚本投币规则为: 随机获取关注列表Up主视频, 默认5视频5硬币, 不点赞.
+用户如需要不投币的版本, 请使用boxjs订阅「https://raw.githubusercontent.com/ClydeTime/BiliBili/main/boxjs/BiliBili.boxjs.json」
+将投币次数置为0, 并保存即可.
 /***********************
 Surge 脚本配置:
 ************************
@@ -257,7 +256,7 @@ async function signBiliBili() {
 	if (config.cookie && await me()) {
 		await queryStatus()
 		var flag = true
-		let exec_times = true //用户设置投币次数
+		let exec_times = true	//用户设置投币次数
 		if (!Boolean(exec_times)) {
 			exec_times = 5
 			real_times = 5 - (Number(config.coins.num) / 10)
@@ -690,18 +689,17 @@ function silver2coin() {
 			else {
 				try {
 					let result = $.toObj(data)
-					
+					let title = `${$.name} 银瓜子转硬币`
 					// 兑换成功
 					if (result && result.code == 0) {
-						let subTitle = `- ${result.message}`
-						let detail = `- 成功兑换: ${result.data.coin} 个硬币\n当前银瓜子: ${result.data.silver} , 当前金瓜子: ${result.data.gold}`
-						$.log(subTitle)
-						$.log(detail)
+						//let subTitle = `- ${result.message}`
+						//let detail = `- 成功兑换: ${result.data.coin} 个硬币\n当前银瓜子: ${result.data.silver} , 当前金瓜子: ${result.data.gold}`
+						//$.log(subTitle)
+						//$.log(detail)
 						//$.msg(title, subTitle, detail)
 					}
 					// 兑换中止（重复兑换&银瓜子不足）
 					else if (result && result.code == 403) {
-						let title = `${$.name} 银瓜子转硬币`
 						let subTitle = "- 未成功兑换"
 						let detail = `- 原因: ${result.message}`
 						$.log(subTitle)
